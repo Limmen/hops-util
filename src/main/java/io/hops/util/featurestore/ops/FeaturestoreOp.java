@@ -54,6 +54,9 @@ public abstract class FeaturestoreOp {
   protected String description = "";
   protected List<String> dependencies = new ArrayList<>();
   protected String dataFormat = FeaturestoreHelper.dataFormatGetOrDefault(null);
+  protected boolean hudi = false;
+  protected Map<String, String> hudiArgs = null;
+  protected String hudiTableBasePath = null;
   
   /**
    * Class constructor
@@ -240,6 +243,28 @@ public abstract class FeaturestoreOp {
    */
   public String getDataFormat() {
     return dataFormat;
+  }
+  
+  
+  /**
+   * @return the hudi boolean flag
+   */
+  public boolean isHudi() {
+    return hudi;
+  }
+  
+  /**
+   * @return the hudi arguments
+   */
+  public Map<String, String> getHudiArgs() {
+    return hudiArgs;
+  }
+  
+  /**
+   * @return hudi base path of the external table
+   */
+  public String getHudiTableBasePath() {
+    return hudiTableBasePath;
   }
   
   /**

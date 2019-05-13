@@ -10,14 +10,15 @@ import io.hops.util.exceptions.JWTNotFoundException;
 import io.hops.util.exceptions.SparkDataTypeNotRecognizedError;
 import io.hops.util.featurestore.FeaturestoreHelper;
 import io.hops.util.featurestore.dtos.FeatureDTO;
-import io.hops.util.featurestore.ops.FeaturestoreOp;
 import io.hops.util.featurestore.dtos.stats.StatisticsDTO;
+import io.hops.util.featurestore.ops.FeaturestoreOp;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
 import javax.xml.bind.JAXBException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Builder class for Create-Featuregroup operation on the Hopsworks Featurestore
@@ -70,7 +71,7 @@ public class FeaturestoreCreateFeaturegroup extends FeaturestoreOp {
     FeaturestoreRestClient.createFeaturegroupRest(featurestore, name, version, description, jobName, dependencies,
       featuresSchema, statisticsDTO);
     FeaturestoreHelper.insertIntoFeaturegroup(dataframe, spark, name,
-      featurestore, version);
+      featurestore, version, hudi, hudiArgs, hudiTableBasePath);
     //Update metadata cache since we created a new feature group
     Hops.updateFeaturestoreMetadataCache().setFeaturestore(featurestore).write();
     
@@ -165,5 +166,21 @@ public class FeaturestoreCreateFeaturegroup extends FeaturestoreOp {
     this.dependencies = dependencies;
     return this;
   }
+  
+  public FeaturestoreCreateFeaturegroup setHudi(boolean hudi) {
+    this.hudi = hudi;
+    return this;
+  }
+  
+  public FeaturestoreCreateFeaturegroup setHudiArgs(Map<String, String> hudiArgs) {
+    this.hudiArgs = hudiArgs;
+    return this;
+  }
+  
+  public FeaturestoreCreateFeaturegroup setHudiTableBasePath(String hudiTableBasePath) {
+    this.hudiTableBasePath = hudiTableBasePath;
+    return this;
+  }
+  
   
 }
